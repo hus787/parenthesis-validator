@@ -1,23 +1,32 @@
 import unittest
 
-def valid(s:list[str])-> bool:
-    return validParenthesis('',s)
 openCloseMap ={'(':')','{':'}','[':']'}
-def validParenthesis(before:str, string: list[str]) -> bool:
+
+def AreParenthesisValid(s:str)-> bool:
+    return arevParenthesisValid('',list(s))
+
+def arevParenthesisValid(unclosedParenthesis:str, string: list[str]) -> bool:
     if openCloseMap.get(string[0]):
-        return validParenthesis(before+string[0], string[1:]) if len(string)>1 else False
-    elif before =='':
+        # if first one is opening parenthesis and remaining parenthesis are more
+        # than one than recurse otherwise not valid
+        return arevParenthesisValid(unclosedParenthesis+string[0], string[1:]) if len(string)>1 else False
+    elif unclosedParenthesis =='':
+        # if no unclosed parenthesis and first parenthesis not opening than not valid
         return False
-    elif openCloseMap[before[-1]]==string[0]:
-        if len(string)>1: return validParenthesis(before[:-1], string[1:])
-        elif len(before)>1: return False
+    elif openCloseMap[unclosedParenthesis[-1]]==string[0]:
+        # if matching closing parenthesis and
+        #  more than one parenthesis remaining than recurse
+        if len(string)>1: return arevParenthesisValid(unclosedParenthesis[:-1], string[1:])
+        #  if no more than one parenthesis remaining and there are still unclosed
+        #  parenthese than not valid
+        elif len(unclosedParenthesis)>1: return False
+        #  valid parenthesis
         else: return True
     else:
+        # not a valid closing parenthesis therefore not valid
         return False
 
-
-
-class TestValidParenthesisChecker(unittest.TestCase):
+class TestArevParenthesisValid(unittest.TestCase):
     def test_parenthesis(self):
         for testStr, expectation in {
                 '(': False,
@@ -30,8 +39,10 @@ class TestValidParenthesisChecker(unittest.TestCase):
                 '({[(())]})())': False,
                 '(((()': False,
                 '(((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((())((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((()': False,
+                'sdfasdf': False,
+                '(asdf)': False
         }.items():
-            self.assertEqual(valid(list(testStr)), expectation)
+            self.assertEqual(AreParenthesisValid(testStr), expectation)
 
 if __name__=='__main__':
     unittest.main()
