@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::{char, collections::HashMap};
 use tracing::info;
 
 fn main() {
@@ -10,7 +10,10 @@ fn are_parenthesis_valid(text: &str) -> bool {
 }
 
 fn _are_parenthesis_valid(before: &str, string: Vec<&str>) -> bool {
-    let open_close_pairs = HashMap::from([('(', ')'), ('{', '}'), ('[', ']')]);
+    let open_close_pairs = HashMap::from([("(", ")"), ("{", "}"), ("[", "]")]);
+    if open_close_pairs.contains_key(string[0]) {
+        return _are_parenthesis_valid(before, string);
+    }
     return false;
 }
 
